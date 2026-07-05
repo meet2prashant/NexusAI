@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-multipart
+google-generativeai
+python-dotenv
+
+python-docx
+sqlalchemy
+passlib[bcrypt]
+PyJWT
+
+pymupdf
+numpy
+requests
+beautifulsoup4
+

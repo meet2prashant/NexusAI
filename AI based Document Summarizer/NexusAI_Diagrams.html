@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAI Technical Diagrams</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#ffffff',
+                primaryBorderColor: '#333333',
+                lineColor: '#000000',
+                fontFamily: 'Arial, sans-serif'
+            },
+            flowchart: { useMaxWidth: false, htmlLabels: true },
+            sequence: { useMaxWidth: false }
+        });
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f9; color: #333; }
+        .diagram-container { 
+            background: white; padding: 30px; margin-bottom: 40px; 
+            border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-align: left;}
+        .mermaid { display: flex; justify-content: center; }
+        p.instructions { background: #eef; padding: 10px; border-left: 4px solid #33c; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>NexusAI - Thesis Diagrams</h1>
+    <p class="instructions">
+        <strong>Instructions:</strong> These are crisp, professional, vector-based diagrams generated via code (not AI art). <br>
+        To use them in your Word Document/PDF report: <strong>Right-click on any diagram -> Copy Image</strong> (or take a clean screenshot).
+    </p>
+
+    <!-- Figure 1 -->
+    <div class="diagram-container">
+        <h2>Figure 1: Zero Level DFD (Context Diagram)</h2>
+        <div class="mermaid">
+        flowchart TD
+            User([User / Client])
+            System[NexusAI System]
+            Gemini([Google Gemini API])
+
+            User -- Uploads Document / URL / Prompt --> System
+            System -- Returns Summary / Chat / QR --> User
+            
+            System -- Sends Chunks & Prompts --> Gemini
+            Gemini -- Streams LLM Response --> System
+        </div>
+    </div>
+
+    <!-- Figure 2 -->
+    <div class="diagram-container">
+        <h2>Figure 2: First Level DFD</h2>
+        <div class="mermaid">
+        flowchart TD
+            User([User])
+            
+            subgraph "NexusAI Backend Processes"
+                P1(1.0 Ingest & Parse Document)
+                P2(2.0 Vector Embedding & RAG)
+                P3(3.0 LLM Summarization)
+                P4(4.0 Session & Share Generation)
+            end
+            
+            DB1[(Vector DB: rag_db.pkl)]
+            DB2[(Analytics & Shares)]
+            Gemini([Gemini 2.5 API])
+            
+            User -- File/URL --> P1
+            P1 -- Raw Text --> P2
+            P2 -- Store Chunks --> DB1
+            
+            P2 -- Contextual Text --> P3
+            User -- Chat Query --> P2
+            P2 -- Retrieves Context --> DB1
+            
+            P3 -- Context + Prompt --> Gemini
+            Gemini -- Streamed Token --> P3
+            P3 -- SSE Stream --> User
+            
+            P3 -- Final State --> P4
+            P4 -- Log Stats --> DB2
+            P4 -- QR Code / Link --> User
+        </div>
+    </div>
+
+    <!-- Figure 3 -->
+    <div class="diagram-container">
+        <h2>Figure 3: Second Level DFD (Vector Embedding & RAG Engine Breakdown)</h2>
+        <div class="mermaid">
+        flowchart TD
+            RawText([Raw Extracted Text])
+            
+            subgraph "Process 2.0: Vector Embedding & RAG Engine"
+                P21(2.1 Text Chunking)
+                P22(2.2 Vector Embedding Request)
+                P23(2.3 Cosine Similarity Calculation)
+            end
+            
+            GeminiEmbed([Gemini Embedding API])
+            VecDB[(Vector DB: rag_db.pkl)]
+            UserQuery([User Chat Query])
+            Context([Contextual Prompt to LLM Summarization])
+            
+            RawText --> P21
+            P21 -- "Text Chunks" --> P22
+            P22 -- "Send Chunks" --> GeminiEmbed
+            GeminiEmbed -- "768-D Vectors" --> P22
+            P22 -- "Store Embedded Vectors" --> VecDB
+            
+            UserQuery --> P23
+            P23 -- "Fetch Vectors" --> VecDB
+            VecDB -- "Return Nearest Vectors" --> P23
+            P23 -- "Relevant Semantic Chunks" --> Context
+        </div>
+    </div>
+
+    <!-- Figure 4 -->
+    <div class="diagram-container">
+        <h2>Figure 4: System Architecture Diagram</h2>
+        <div class="mermaid">
+        graph TD
+            subgraph "Client Tier (Web Browser / Mobile)"
+                UI[Vanilla JS / HTML5 UI]
+                TTS[Web Speech API]
+            end
+
+            subgraph "Application Tier (FastAPI Server)"
+                API[REST & SSE Endpoints]
+                Scraper[Web Scraper Module]
+                RAG[Local RAG Engine]
+                Stats[Analytics JSON Manager]
+            end
+
+            subgraph "Data & External Services Tier"
+                VecDB[(Pickle Vector DB)]
+                LLM([Google Gemini API])
+                FileAPI([Google File API])
+            end
+
+            UI -- HTTP / POST --> API
+            UI -- Server-Sent Events --> API
+            UI -. Audio Feedback .-> TTS
+            
+            API -- Parse URL --> Scraper
+            API -- Document Flow --> RAG
+            API -- Store Metrics --> Stats
+            
+            RAG <--> VecDB
+            API -- Image/Audio --> FileAPI
+            RAG -- Embedded Prompts --> LLM
+        </div>
+    </div>
+
+    <!-- Figure 5 -->
+    <div class="diagram-container">
+        <h2>Figure 5: Use Case Diagram</h2>
+        <div class="mermaid">
+        usecaseDiagram
+        flowchart LR
+            User([Standard User])
+            Admin([Administrator])
+            
+            subgraph "NexusAI System"
+                UC1(Upload Document / Audio)
+                UC2(Provide Web URL)
+                UC3(Generate Summary)
+                UC4(Chat with Document)
+                UC5(Listen via TTS)
+                UC6(Export to PDF)
+                UC7(Scan QR Code for Mobile)
+                UC8(View Analytics Dashboard)
+            end
+            
+            User --- UC1
+            User --- UC2
+            User --- UC3
+            User --- UC4
+            User --- UC5
+            User --- UC6
+            User --- UC7
+            
+            Admin --- UC8
+        </div>
+    </div>
+
+    <!-- Figure 6 -->
+    <div class="diagram-container">
+        <h2>Figure 6: Sequence Diagram (Streaming Summarization Process)</h2>
+        <div class="mermaid">
+        sequenceDiagram
+            participant U as User Browser
+            participant F as FastAPI Server
+            participant R as RAG Engine
+            participant G as Gemini API
+
+            U->>F: POST /api/summarize (File)
+            F->>F: Extract & Clean Text
+            F->>R: Chunk & Embed Document
+            R-->>F: Ready
+            F-->>U: Return HTTP 200 (text/event-stream)
+            F->>G: Request Generation Stream
+            
+            loop Token by Token
+                G-->>F: Yield Token
+                F-->>U: SSE: data: {token}
+                U->>U: Render Markdown to UI
+            end
+            G-->>F: Stream Complete
+            F->>F: Clean temporary files
+        </div>
+    </div>
+
+    <!-- Figure 7 -->
+    <div class="diagram-container">
+        <h2>Figure 7: Activity Diagram (User Interaction Flow)</h2>
+        <div class="mermaid">
+        stateDiagram-v2
+            [*] --> Home
+            Home --> UploadMedia: Select PDF/Doc/Audio
+            Home --> EnterURL: Paste Link
+            
+            UploadMedia --> Processing
+            EnterURL --> Scraping
+            Scraping --> Processing
+            
+            Processing --> StreamingSummary: SSE Stream active
+            StreamingSummary --> SummaryComplete
+            
+            SummaryComplete --> ChatWindow: Ask Questions
+            SummaryComplete --> ListenTTS: Click Play
+            SummaryComplete --> ExportPDF: Download
+            SummaryComplete --> GenerateQR: Scan on Phone
+            
+            ChatWindow --> SummaryComplete
+            GenerateQR --> [*]
+            ExportPDF --> [*]
+        </div>
+    </div>
+
+    <!-- Figure 8 -->
+    <div class="diagram-container">
+        <h2>Figure 8: Component Diagram</h2>
+        <div class="mermaid">
+        classDiagram
+            class Frontend {
+                +app.js
+                +index.html
+                +style.css
+            }
+            class Controllers {
+                +main.py
+            }
+            class Services {
+                +ai.py
+                +rag.py
+                +scraper.py
+                +stats.py
+            }
+            class Models {
+                +Google Generative AI
+                +Embeddings Model
+            }
+            
+            Frontend --> Controllers : HTTP/SSE calls
+            Controllers --> Services : Delegates Logic
+            Services --> Models : API Requests
+        </div>
+    </div>
+
+    <!-- Figure 9 -->
+    <div class="diagram-container">
+        <h2>Figure 9: Trust & Bias Scoring Workflow</h2>
+        <div class="mermaid">
+        flowchart TD
+            Start([Extracted Document Text]) --> Step1[Identify Factual Claims]
+            Step1 --> Step2[Analyze Subjective Tone & Adjectives]
+            Step2 --> Step3[Identify Source Authority Markers]
+            Step3 --> Math[Compute Weighted Score 0-100]
+            
+            Math --> Logic{Score Threshold}
+            Logic -- > 80 --> Green[High Trust - Reliable]
+            Logic -- 50 to 80 --> Yellow[Medium Trust - Verify]
+            Logic -- < 50 --> Red[Low Trust - Biased/Unreliable]
+            
+            Green --> End([Render on Dashboard])
+            Yellow --> End
+            Red --> End
+        </div>
+    </div>
+
+</body>
+</html>

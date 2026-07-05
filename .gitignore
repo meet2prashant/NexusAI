@@ -1,0 +1,20 @@
+# Python Environments
+venv/
+.env/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables (Critical Security)
+.env
+.env.local
+
+# Application Data
+backend/data/shares/
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db

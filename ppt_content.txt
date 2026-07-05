@@ -1,0 +1,90 @@
+Project Presentation: Heart Disease Risk 
+Assessment using Predictive Analytics 
+Slide 1: Title Slide 
+Project Title: Heart Disease Risk Assessment using Predictive Analytics​
+Subtitle: A Comparative Study of Machine Learning Algorithms​
+Course: BCA (Final Year) - Continuous Assessment​
+University: Lovely Professional University (LPU) 
+ 
+ 
+Slide 2: Introduction & Objective 
+●​ The Problem: Cardiovascular diseases (CVDs) are the leading cause of death globally. 
+Early detection is a critical challenge in clinical settings. 
+●​ The Goal: To develop a Machine Learning pipeline that predicts heart disease risk 
+based on multi-dimensional clinical parameters. 
+●​ Tech Stack: 
+○​ Python (Google Colab Environment) 
+○​ Pandas & NumPy (Data Handling) 
+○​ Matplotlib & Seaborn (Visualization) 
+○​ Scikit-Learn (Machine Learning Models) 
+ 
+ 
+Slide 3: Dataset Description 
+●​ Source: UCI Machine Learning Repository (Cleveland Dataset). 
+●​ Scope: 303 patient samples with 14 clinical attributes. 
+●​ Key Attributes: 
+○​ trestbps: Resting blood pressure (mm Hg). 
+○​ chol: Serum cholesterol (mg/dl). 
+○​ thalach: Maximum heart rate achieved. 
+○​ oldpeak: ST depression induced by exercise relative to rest. 
+○​ ca: Number of major vessels colored by flourosopy. 
+ 
+ 
+Slide 4: Data Preprocessing 
+●​ Feature Selection: Removed irrelevant metadata such as id and dataset to prevent 
+noise. 
+●​ Target Simplification: Transformed the num attribute (levels 0-4) into a binary target: 
+○​ 0: No Heart Disease 
+○​ 1: Presence of Heart Disease 
+●​ Categorical Encoding: Applied One-Hot Encoding (pd.get_dummies) to convert 
+text-based features (Sex, Chest Pain Type) into machine-readable numeric formats. 
+●​ Handling Missing Data: Employed Median Imputation to fill missing entries without 
+introducing statistical bias. 
+ 
+ 
+Slide 5: Feature Scaling 
+●​ Method: StandardScaler (Z-score Normalization). 
+●​ Rationale: Health data has vastly different scales (Age: 20-80 vs. Cholesterol: 150-400). 
+●​ Importance: This step is essential for distance-based algorithms like SVM to ensure no 
+single high-value feature dominates the model's decision-making process. 
+ 
+ 
+Slide 6: Comparative Study of Algorithms 
+We evaluated three different modeling approaches to find the most accurate predictor: 
+ 
+1.​ Logistic Regression: Used as a baseline linear model. 
+2.​ Support Vector Machine (SVM): Used with an RBF kernel to capture non-linear 
+relationships. 
+3.​ Random Forest Classifier: An ensemble method utilizing multiple decision trees. 
+ 
+Results: 
+ 
+●​ Logistic Regression Accuracy: ~80.4% 
+●​ SVM Accuracy: ~83.7% 
+●​ Random Forest Accuracy: 86.41% (Final Selected Model) 
+ 
+ 
+Slide 7: Performance Evaluation (Random Forest) 
+●​ Accuracy: 86.41% on the test dataset. 
+●​ Confusion Matrix Analysis: 
+●​ True Positives/Negatives: High count, showing strong generalization. 
+●​ False Negatives: Minimized to ensure sick patients are not incorrectly cleared. 
+●​ Recall (Sensitivity): This was prioritized because missing a high-risk patient is a critical 
+error in healthcare informatics. 
+ 
+ 
+Slide 8: Conclusion 
+●​ The project successfully demonstrates the utility of Predictive Analytics in medical 
+diagnostics. 
+●​ Random Forest proved to be the most robust algorithm for this specific clinical dataset. 
+●​ Outcome: A trained model capable of providing a decision-support metric for clinicians 
+based on standard health parameters. 
+ 
+ 
+Slide 9: Future Scope & Q&A 
+●​ Deployment: Integrating the model into a web dashboard (using Flask or Streamlit) for 
+real-time risk assessment. 
+●​ Data Expansion: Training with larger, more diverse datasets to improve model 
+sensitivity across different demographics. 
+●​ Questions? 
+ 
